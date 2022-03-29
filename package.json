@@ -1,0 +1,26 @@
+{
+  "name": "proposal-function-memo",
+  "private": true,
+  "description": "A TC39 proposal for an Function.prototype.memo method in the JavaScript language.",
+  "author": "J. S. Choi <jschoi@jschoi.org> (https://jschoi.org/)",
+  "license": "BSD-3-Clause",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tc39/proposal-array-async-from.git"
+  },
+  "keywords": [
+    "proposal",
+    "tc39",
+    "function",
+    "callback"
+  ],
+  "scripts": {
+    "prebuild": "mkdir -p dist",
+    "build": "ecmarkup --verbose spec.html dist/index.html --css dist/ecmarkup.css --js dist/ecmarkup.js",
+    "watch": "npm run build -- --watch"
+  },
+  "devDependencies": {
+    "ecmarkup": "^10.0.2"
+  },
+  "homepage": "https://github.com/js-choi/proposal-function-memo"
+}
