@@ -36,25 +36,36 @@ fMemo(3); // Does not print anything. Returns 6.
 ```
 
 ## Unresolved questions
-How should cache garbage collection work? (Using WeakMaps for the caches would
-be ideal…except that WeakMaps do not support primitives as keys.) Should we
-just use Maps and make the developer manage the cache memory themselves? This
-problem is unresolved.
 
+### Issue 2:
+Should `memo` be a prototype method, a static function, a function decorator,
+or multiple things?
+
+### Issue 3:
+How should cache garbage collection work? (Using WeakMaps for the caches would
+be ideal…except that WeakMaps do not support primitives as keys.)
+
+Should we just use Maps and make the developer manage the cache memory
+themselves? (See also [LRUMap and LFUMap][].)
+
+There is also the [compositeKeys proposal][].
+
+[LRUMap and LFUMap]: https://github.com/js-choi/policy-map-set
+[compositeKeys proposal]: (https://github.com/tc39/proposal-richer-keys/tree/master/compositeKey)
+
+### Issue 4:
 If we go with a Map cache, how should we structure the cache? For example, we
 could use a tree of Maps, or we could use argument-[tuples][] as keys in one
 Map.
 
 [tuples]: https://github.com/tc39/proposal-record-tuple
 
+### Issue 5:
 Should we add an LRUMap ([least recently used][]) to the language, like
 [Python’s lru_cache][Python functools.lru_cache]? If so, should it be added
 with this proposal?
 
 [least recently used]: https://en.wikipedia.org/wiki/Cache_replacement_policies#Least_recently_used_(LRU)
-
-Should `memo` be a prototype method, a static function, a function decorator,
-or multiple things?
 
 ## Precedents
 
