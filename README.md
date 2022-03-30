@@ -50,7 +50,7 @@ themselves? (See also [LRUMap and LFUMap][].)
 
 There is also the [compositeKeys proposal][].
 
-[LRUMap and LFUMap]: https://github.com/js-choi/policy-map-set
+[LRUMap and LFUMap]: https://github.com/js-choi/proposal-policy-map-set
 [compositeKeys proposal]: (https://github.com/tc39/proposal-richer-keys/tree/master/compositeKey)
 
 ### [Issue 4](https://github.com/js-choi/proposal-function-memo/issues/4):
