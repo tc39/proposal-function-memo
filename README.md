@@ -37,11 +37,11 @@ fMemo(3); // Does not print anything. Returns 6.
 
 ## Unresolved questions
 
-### Issue 2:
+### [Issue 2](https://github.com/js-choi/proposal-function-memo/issues/2):
 Should `memo` be a prototype method, a static function, a function decorator,
 or multiple things?
 
-### Issue 3:
+### [Issue 3](https://github.com/js-choi/proposal-function-memo/issues/3):
 How should cache garbage collection work? (Using WeakMaps for the caches would
 be ideal…except that WeakMaps do not support primitives as keys.)
 
@@ -53,14 +53,14 @@ There is also the [compositeKeys proposal][].
 [LRUMap and LFUMap]: https://github.com/js-choi/policy-map-set
 [compositeKeys proposal]: (https://github.com/tc39/proposal-richer-keys/tree/master/compositeKey)
 
-### Issue 4:
+### [Issue 4](https://github.com/js-choi/proposal-function-memo/issues/4):
 If we go with a Map cache, how should we structure the cache? For example, we
 could use a tree of Maps, or we could use argument-[tuples][] as keys in one
 Map.
 
 [tuples]: https://github.com/tc39/proposal-record-tuple
 
-### Issue 5:
+### [Issue 5](https://github.com/js-choi/proposal-function-memo/issues/5):
 Should we add an LRUMap ([least recently used][]) to the language, like
 [Python’s lru_cache][Python functools.lru_cache]? If so, should it be added
 with this proposal?
