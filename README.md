@@ -67,7 +67,7 @@ Now cache would be `LRUMap(2) { #[s0, undefined, 0] ⇒ 'a0', #[s1, undefined, 1
 ⇒ 'b1' }`, where `s0` and `s1` are unique symbols. `f`’s closure would
 internally close over a `WeakMap { o0 ⇒ s0, o1 ⇒ s1 }`.
 
-The default behavior of `memo` (i.e., without giving a `cache` argument) is uncertain, too (see [Issue 3][]). It probably would be simply be an unbounded ordinary Map. (WeakMaps cannot contain tuples as their keys.)
+The default behavior of `memo` (i.e., without giving a `cache` argument) is uncertain (see [Issue 3][]). It probably would be simply be an unbounded ordinary Map. (WeakMaps cannot contain tuples as their keys.)
 
 [tuples]: https://github.com/tc39/proposal-record-tuple
 
@@ -87,7 +87,7 @@ Now cache would be `LRUMap(2) { compositeKey(o0, undefined, 0) ⇒ 'a0',
 compositeKey(o1, undefined, 1) ⇒ 'b1' }`.
 
 The default behavior of `memo` (i.e., without giving a `cache` argument) is
-uncertain, too (see [Issue 3][]). It probably would be simply be a WeakMap,
+uncertain (see [Issue 3][]). It probably would simply be a WeakMap,
 which would be able to contain composite keys as their keys.
 
 [composite keys]: https://github.com/tc39/proposal-richer-keys/tree/master/compositeKey
