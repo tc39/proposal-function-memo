@@ -1,5 +1,7 @@
 # Function.prototype.memo for JavaScript
-ECMAScript Stage-0 Proposal. J. S. Choi, 2022.
+ECMAScript Stage-0 Proposal.
+
+Champions: Hemanth HM; J. S. Choi.
 
 ## Rationale
 [Function memoization][] is a common technique that caches the results of
