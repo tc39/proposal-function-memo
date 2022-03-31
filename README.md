@@ -13,7 +13,7 @@ These are useful for:
 [function memoization]: https://en.wikipedia.org/wiki/Memoization
 [singleton object]: https://en.wikipedia.org/wiki/Singleton_pattern
 [mutually recursive]: https://en.wikipedia.org/wiki/Mutual_recursion
-[recursive-descente parsing]: https://en.wikipedia.org/wiki/Recursive_descent_parser
+[recursive-descent parsing]: https://en.wikipedia.org/wiki/Recursive_descent_parser
 
 Memoization is common but annoying to write. This proposal would add a standard
 memoization to the core JavaScript language. Its caching system would be based on WeakMaps and tuples.
