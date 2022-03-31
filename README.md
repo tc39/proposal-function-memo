@@ -35,13 +35,70 @@ fMemo(2); // Does not print anything. Returns 4.
 fMemo(3); // Does not print anything. Returns 6.
 ```
 
+### Result caches
+The developer would be able to pass an optional `cache` argument. This argument
+must be a Map-like object with `.has`, `.get`, and `.set` methods. In
+particular, there is a [proposal for Map-like objects with cache-replacement
+policies like LRUMap][proposal-policy-map-set], which would allow developers to
+easily specify that the memoized function use a memory-constrained cache.
+
+[proposal-policy-map-set]: https://github.com/js-choi/proposal-policy-map-set
+
+There are at least two possible ways we could design the `cache` parameter; see
+[Issue 3][] and [Issue 4][].
+
+#### Tuple keys?
+A: We could uses [tuples][] as the cache’s keys. Each tuple represents a
+function call to the memoized function, and the tuple would be of the form `#[thisVal, newTargetVal, ...args]`.
+
+Object values would be replaced by symbols that uniquely identify that object.
+(Tuples cannot directly contain objects. The memoized function’s closure would
+close over an internal WeakMap that maps objects to their symbols.)
+
+```js
+const cache = new LRUMap(256);
+const f = (function f (arg0) { return this.x + arg0; }).memo(cache);
+const o0 = { x: 'a' }, o1 = { x: 'b' };
+f.call(o0, 0); // Returns 'a0'.
+f.call(o1, 1); // Returns 'b1'.
+```
+
+Now cache would be `LRUMap(2) { #[s0, undefined, 0] ⇒ 'a0', #[s1, undefined, 1]
+⇒ 'b1' }`, where `s0` and `s1` are unique symbols. `f`’s closure would
+internally close over a `WeakMap { o0 ⇒ s0, o1 ⇒ s1 }`.
+
+The default behavior of `memo` (i.e., without giving a `cache` argument) is uncertain, too (see [Issue 3][]). It probably would be simply be an unbounded ordinary Map. (WeakMaps cannot contain tuples as their keys.)
+
+[tuples]: https://github.com/tc39/proposal-record-tuple
+
+#### Composite keys?
+B: We could use [composite keys][] as the cache’s keys. Each composite key
+represents a function call to the memoized function, and the composite key would be of the form `compositeKey(thisVal, newTargetVal, ...args)`.
+
+```js
+const cache = new LRUMap(256);
+const f = (function f (arg0) { return this.x + arg0; }).memo(cache);
+const o0 = { x: 'a' }, o1 = { x: 'b' };
+f.call(o0, 0); // Returns 'a0'.
+f.call(o1, 1); // Returns 'b1'.
+```
+
+Now cache would be `LRUMap(2) { compositeKey(o0, undefined, 0) ⇒ 'a0',
+compositeKey(o1, undefined, 1) ⇒ 'b1' }`.
+
+The default behavior of `memo` (i.e., without giving a `cache` argument) is
+uncertain, too (see [Issue 3][]). It probably would be simply be a WeakMap,
+which would be able to contain composite keys as their keys.
+
+[composite keys]: https://github.com/tc39/proposal-richer-keys/tree/master/compositeKey
+
 ## Unresolved questions
 
-### [Issue 2](https://github.com/js-choi/proposal-function-memo/issues/2):
+### [Issue 2][]:
 Should `memo` be a prototype method, a static function, a function decorator,
 or multiple things?
 
-### [Issue 3](https://github.com/js-choi/proposal-function-memo/issues/3):
+### [Issue 3][]:
 How should cache garbage collection work? (Using WeakMaps for the caches would
 be ideal…except that WeakMaps do not support primitives as keys.)
 
@@ -53,19 +110,17 @@ There is also the [compositeKeys proposal][].
 [LRUMap and LFUMap]: https://github.com/js-choi/proposal-policy-map-set
 [compositeKeys proposal]: (https://github.com/tc39/proposal-richer-keys/tree/master/compositeKey)
 
-### [Issue 4](https://github.com/js-choi/proposal-function-memo/issues/4):
+### [Issue 4][]:
 If we go with a Map cache, how should we structure the cache? For example, we
 could use a tree of Maps, or we could use argument-[tuples][] as keys in one
 Map.
 
 [tuples]: https://github.com/tc39/proposal-record-tuple
 
-### [Issue 5](https://github.com/js-choi/proposal-function-memo/issues/5):
-Should we add an LRUMap ([least recently used][]) to the language, like
-[Python’s lru_cache][Python functools.lru_cache]? If so, should it be added
-with this proposal?
-
-[least recently used]: https://en.wikipedia.org/wiki/Cache_replacement_policies#Least_recently_used_(LRU)
+### [Issue 5][]:
+How should function calls be considered “equivalent”? How are values compared
+(e.g., with SameValue like `===` or SameValueZero like `Map.get`)? Are the
+`this`-binding receiver and the `new.target` value also used in comparison?
 
 ## Precedents
 
@@ -75,3 +130,8 @@ with this proposal?
 * [Wikipedia “function memoization” article][function memoization]
 
 [Python functools.lru_cache]: https://docs.python.org/3/library/functools.html#functools.lru_cache
+
+[Issue 2]: https://github.com/js-choi/proposal-function-memo/issues/2
+[Issue 3]: https://github.com/js-choi/proposal-function-memo/issues/3
+[Issue 4]: https://github.com/js-choi/proposal-function-memo/issues/4
+[Issue 5]: https://github.com/js-choi/proposal-function-memo/issues/5
