@@ -1,7 +1,7 @@
 {
   "name": "proposal-function-memo",
   "private": true,
-  "description": "A TC39 proposal for an Function.prototype.memo method in the JavaScript language.",
+  "description": "A TC39 proposal for function memoization in the JavaScript language.",
   "author": "J. S. Choi <jschoi@jschoi.org> (https://jschoi.org/)",
   "license": "BSD-3-Clause",
   "repository": {
