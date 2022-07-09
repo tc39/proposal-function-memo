@@ -8,17 +8,35 @@ Champions: Hemanth HM; J. S. Choi.
 function calls and returns the cached results when the same inputs occur again.
 These are useful for:
 
-* Optimizing expensive function calls.
+* Optimizing expensive function calls (e.g., factorials, Fibonacci numbers) in a space–time tradeoff.
+* Caching state→UI calculations (e.g., in [React’s useMemo][]).
 * Ensuring that callbacks always return the same [singleton object][].
 * [Mutually recursive][] [recursive-descent parsing][].
+* Implementing [hashlife from cellular automata][hashlife].
+* [Materializing views for database queries][materialized views].
+* [Tabling in logic programming][logic tabling].
 
 [function memoization]: https://en.wikipedia.org/wiki/Memoization
+[React’s useMemo]: https://reactjs.org/docs/hooks-reference.html#usememo
 [singleton object]: https://en.wikipedia.org/wiki/Singleton_pattern
 [mutually recursive]: https://en.wikipedia.org/wiki/Mutual_recursion
 [recursive-descent parsing]: https://en.wikipedia.org/wiki/Recursive_descent_parser
+[hashlife]: https://en.wikipedia.org/wiki/Hashlife
+[materialized views]: https://en.wikipedia.org/wiki/Materialized_view
+[logic tabling]: https://www.metalevel.at/prolog/memoization
 
-Memoization is common but annoying to write. This proposal would add a standard
-memoization to the core JavaScript language. Its caching system would be based on WeakMaps and tuples.
+Memoization is useful, common, but annoying to write.
+We propose exploring the addition of a memoization API to the JavaScript language.
+
+If this proposal is approved for Stage 1, then we would explore various
+directions for the API’s design. We would also assemble as many real-world use
+cases as possible and shape our design to fulfill them.
+
+In addition, if both [proposal-policy-map-set][] and this proposal are approved for
+Stage 1, then we would explore how memoized functions could use these data
+structures to control their caches’ memory usage.
+
+[proposal-policy-map-set]: https://github.com/js-choi/proposal-policy-map-set
 
 ## Description
 The Function.prototype.memo method would create a new function that calls the
@@ -35,6 +53,41 @@ fMemo(3); // Does not print anything. Returns 6.
 fMemo(2); // Prints 2 and returns 4.
 fMemo(2); // Does not print anything. Returns 4.
 fMemo(3); // Does not print anything. Returns 6.
+```
+
+Additionally, we may also add a function-decorator version: `@Function.memo`.
+This would make it easier to apply memoization to function declarations:
+
+```js
+@Function.memo
+function f (x) { console.log(x); return x * 2; }
+```
+
+Either version would work with recursive functions:
+
+```js
+// Version with prototype method:
+const getFibonacci = (function (n) {
+  if (n < 2) {
+    return n;
+  } else {
+    return getFibonacci(n - 1) +
+      getFibonacci(n - 2);
+  }
+}).memo();
+console.log(getFibonacci(100));
+
+// Version with function decorator:
+@Function.memo
+function getFibonacci (n) {
+  if (n < 2) {
+    return n;
+  } else {
+    return getFibonacci(n - 1) +
+      getFibonacci(n - 2);
+  }
+}
+console.log(getFibonacci(100));
 ```
 
 ### Result caches
