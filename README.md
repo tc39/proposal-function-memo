@@ -103,7 +103,7 @@ There are at least two possible ways we could design the `cache` parameter; see
 [Issue 3][] and [Issue 4][].
 
 #### Tuple keys?
-A: We could uses [tuples][] as the cache’s keys. Each tuple represents a
+A: We could use [tuples][] as the cache’s keys. Each tuple represents a
 function call to the memoized function, and the tuple would be of the form `#[thisVal, newTargetVal, ...args]`.
 
 Object values would be replaced by symbols that uniquely identify that object.
@@ -127,7 +127,7 @@ The default behavior of `memo` (i.e., without giving a `cache` argument) is unce
 [tuples]: https://github.com/tc39/proposal-record-tuple
 
 #### Composite keys?
-B: We could use [composite keys][] as the cache’s keys. Each composite key
+B: Another choice for cache’s keys is [composite keys][]. Each composite key
 represents a function call to the memoized function, and the composite key would be of the form `compositeKey(thisVal, newTargetVal, ...args)`.
 
 ```js
