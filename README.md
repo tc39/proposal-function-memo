@@ -1,5 +1,5 @@
 # Function.prototype.memo for JavaScript
-ECMAScript Stage-0 Proposal.
+ECMAScript Stage-1 Proposal.
 
 Champions: Hemanth HM; J. S. Choi.
 
